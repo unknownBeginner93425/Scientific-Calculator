@@ -1,0 +1,477 @@
+#: kivy 1.0.9
+
+<Calculator>:
+    size_hint: 1, 1
+    pos_hint: {'center_x': 0.5,'center_y': 0.5}
+    
+    Image:
+        source: "gui/img/calculator_image.jpg"
+        size_hint: 1, 1
+        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+        allow_stretch: True
+
+    InputTextbox:
+        id: txt_box_screen_I
+        color: 0, 0, 0, 1
+        font_name: "gui/font/cambria-math.ttf"
+        halign: 'left'
+        valign: 'top'
+        text_size: self.size
+
+        size_hint: 0.76, 0.06
+        pos_hint: {'x': 0.12, 'y': 0.762}
+
+    OutputTextbox:
+        id: txt_box_screen_O
+        color: 0, 0, 0, 1
+        font_name: "gui/font/cambria-math.ttf"
+        halign: 'right'
+        valign: 'bottom'
+        text_size: self.size
+
+        size_hint: 0.76, 0.06
+        pos_hint: {'x': 0.12, 'y': 0.702}
+
+    RelativeLayout:
+        id: indicators
+        size_hint: 0.76, 0.017
+        pos_hint: {'x': 0.0605, 'y': 0.4115}
+
+        Indicator:
+            id: 501
+            source: "gui/img/shift_indicator.png"
+            size_hint: 0.2, 1
+            pos_hint: {'x': 0.0,'y': 24.25}
+
+        Indicator:
+            id: 502
+            source: "gui/img/alpha_indicator.png"
+            size_hint: 0.2, 1
+            pos_hint: {'x': 0.04,'y': 24.25}
+            
+        Indicator:
+            id: 503
+            source: "gui/img/M_indicator.png"
+            size_hint: 0.2, 0.85
+            pos_hint: {'x': 0.09,'y': 24.28}
+        
+        Indicator:
+            id: 504
+            source: "gui/img/sto_var_indicator.png"
+            size_hint: 0.2, 0.85
+            pos_hint: {'x': 0.145,'y': 24.28}
+
+        Indicator:
+            id: 505
+            source: "gui/img/MathI_indicator.png"
+            size_hint: 0.2, 0.85
+            pos_hint: {'x': 0.225,'y': 24.28}
+
+        Indicator:
+            id: 506
+            source: "gui/img/degree_indicator.png"
+            size_hint: 0.2, 0.95
+            pos_hint: {'x': 0.295,'y': 24.25} 
+
+        Indicator:
+            id: 507
+            source: "gui/img/radian_indicator.png"
+            size_hint: 0.2, 1
+            pos_hint: {'x': 0.335,'y': 24.25}
+
+        Indicator:
+            id: 508
+            source: "gui/img/gradian_indicator.png"
+            size_hint: 0.2, 0.95
+            pos_hint: {'x': 0.375,'y': 24.25}
+
+        Indicator:
+            id: 509
+            source: "gui/img/fix_indicator.png"
+            size_hint: 0.2, 0.8
+            pos_hint: {'x': 0.44,'y': 24.28}
+
+        Indicator:
+            id: 510
+            source: "gui/img/sci_indicator.png"
+            size_hint: 0.2, 0.8
+            pos_hint: {'x': 0.515,'y': 24.28}
+
+        Indicator:
+            id: 511
+            source: "gui/img/eng_indicator.png"
+            size_hint: 0.2, 0.8
+            pos_hint: {'x': 0.575,'y': 24.28}
+        
+        Indicator:
+            id: 512
+            source: "gui/img/rect_complex_indicator.png"
+            size_hint: 0.2, 0.85
+            pos_hint: {'x': 0.615,'y': 24.28}
+
+        Indicator:
+            id: 513
+            source: "gui/img/polar_complex_indicator.png"
+            size_hint: 0.2, 0.85
+            pos_hint: {'x': 0.655,'y': 24.28}
+     
+
+    RelativeLayout:
+        id: number_pad
+        size_hint: 0.86, 0.255
+        pos_hint: {'x': 0.035,'y': 0.0285}
+
+        Button:
+            id: 101
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.047, 'y': 0.12}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 102
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.047, 'y': 0.39}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 103
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.247, 'y': 0.39}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 104
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.452, 'y': 0.39}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 105
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.047, 'y': 0.66}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 106
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.247, 'y': 0.66}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 107
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.452, 'y': 0.66}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 108
+            size_hint: 0.175, 0.20
+            pos_hint: {'x': 0.047, 'y': 0.92}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 109
+            size_hint: 0.175, 0.20
+            pos_hint: {'x': 0.247, 'y': 0.92}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 110
+            size_hint: 0.175, 0.20
+            pos_hint: {'x': 0.452, 'y': 0.92}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 301
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.657, 'y': 0.39}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 302
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.860, 'y': 0.39}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 303
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.657, 'y': 0.66}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 304
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.860, 'y': 0.66}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 111
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.247, 'y': 0.12}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 344
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.452, 'y': 0.12}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 209
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.657, 'y': 0.12}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 420
+            size_hint: 0.175, 0.19
+            pos_hint: {'x': 0.860, 'y': 0.12}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 415
+            size_hint: 0.175, 0.20
+            pos_hint: {'x': 0.657, 'y': 0.92}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 418
+            size_hint: 0.175, 0.20
+            pos_hint: {'x': 0.860, 'y': 0.92}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+    
+    RelativeLayout:
+        id: function_pad
+        size_hint: 0.86, 0.285
+        pos_hint: {'x': 0.035,'y': 0.168}
+
+        Button:
+            id: 401
+            size_hint: 0.11, 0.135
+            pos_hint: {'x': 0.057, 'y': 1.45}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+        
+        Button:
+            id: 402
+            size_hint: 0.11, 0.135
+            pos_hint: {'x': 0.207, 'y': 1.45}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 403
+            size_hint: 0.11, 0.135
+            pos_hint: {'x': 0.762, 'y': 1.45}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 405
+            size_hint: 0.11, 0.135
+            pos_hint: {'x': 0.913, 'y': 1.45}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 422
+            size_hint: 0.16, 0.135
+            pos_hint: {'x': 0.459, 'y': 1.47}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+        
+        Button:
+            id: 423
+            size_hint: 0.16, 0.135
+            pos_hint: {'x': 0.459, 'y': 1.245}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 424
+            size_hint: 0.10, 0.21
+            pos_hint: {'x': 0.357, 'y': 1.32}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 425
+            size_hint: 0.10, 0.21
+            pos_hint: {'x': 0.62, 'y': 1.32}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 408
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.042, 'y': 0.60}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 410
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.212, 'y': 0.60}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 330
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.382, 'y': 0.60}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 331
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.552, 'y': 0.60}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 412
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.722, 'y': 0.60}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 333
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.892, 'y': 0.60}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 320
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.042, 'y': 0.797}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 321
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.212, 'y': 0.797}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 322
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.382, 'y': 0.797}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 324
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.552, 'y': 0.797}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 326
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.722, 'y': 0.797}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 328
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.892, 'y': 0.797}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+        
+        Button:
+            id: 308
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.042, 'y': 0.994}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 310
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.212, 'y': 0.994}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 312
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.382, 'y': 0.994}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 314
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.552, 'y': 0.994}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 316
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.722, 'y': 0.994}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 318
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.892, 'y': 0.994}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 406
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.042, 'y': 1.191}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 305
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.212, 'y': 1.191}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 306
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.722, 'y': 1.191}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
+
+        Button:
+            id: 307
+            size_hint: 0.145, 0.115
+            pos_hint: {'x': 0.892, 'y': 1.191}
+            background_color: (0, 0, 0, 0)
+            on_press: root.on_button_press(self)
