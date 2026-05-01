@@ -1,0 +1,10 @@
+kivy[base]
+kivy_examples
+typing
+copy
+inspect
+decimal
+abc
+enum
+sqlite3
+datetime

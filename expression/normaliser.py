@@ -6,6 +6,7 @@ from expression.utilities import NumberTokenQueue
 
 from copy import deepcopy
 from typing import Literal, List, Set, TYPE_CHECKING
+from decimal import Decimal
 
 if TYPE_CHECKING:
     from core.settings_and_variables import VariableMemory
@@ -26,7 +27,7 @@ class Normalisation():
         parenthesis_func = {306, 307, 310, 311, 314, 315, 316, 317, 318, 319,
                             324, 325, 326, 327, 328, 329, 337, 338, 339, 341}
         
-        func_token = {306, 307, 310, 311, 315, 316, 318, 319,
+        func_token = {306, 307, 310, 311, 316, 318, 319,
                       324, 325, 326, 327, 328, 329, 337, 338, 339, 341}
         
         multi_arg_func   = {307, 316, 337, 338, 341}
@@ -124,6 +125,18 @@ class StructuralNormalisation():
                             else: valid = True; break
             if not valid: raise CommaError
 
+    def __unary_plus_minus(self, expr: Stack):
+        output_stack = Stack()
+        
+        for token in expr:
+            if token not in {301, 302, 320}: # is not plus/minus sign
+                output_stack.push(token)
+                continue
+            if output_stack.is_empty():
+                if token == 301: continue
+                else: output_stack.push(320); continue
+            if expr.pop() in {301, 302, 320}: pass
+        
 class SemanticNormalisation():
     def __call__(self, expr: Stack, func_token: Set[int]) -> Stack:
         expr = self.__normalise_log(expr)
@@ -193,7 +206,7 @@ class SemanticNormalisation():
                 next_element = expr_ori_ref.inspect_front()
                 # current value is close bracket or number, followed by open bracket or function
                 # current value is number or variable or constant, followed by variable or constant
-                if (element == Token.CL_BRACKET or element // 100 == 2 or isinstance(element, float)) \
+                if (element == Token.CL_BRACKET or element // 100 == 2 or isinstance(element, Decimal)) \
                     and (next_element == Token.OP_BRACKET or next_element in func_token or next_element // 100 == 2):
                         expr_new_ver.enqueue(345)
 

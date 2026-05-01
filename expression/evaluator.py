@@ -42,13 +42,13 @@ class Evaluation():
                       329: Arctan,
                       335: Permutation,
                       336: Combination,
-                      344: TenToPow,
+                      342: Percentage,
+                      344: TenToIntPow,
                       345: Multiplication
                       }
     
     def __init__(self, RPN_expr: 'CircularQueue'):
         self.__expr = RPN_expr
-        print(self.__expr)
         
     def evaluate(self) -> float:
         output_stack = Stack()
@@ -56,7 +56,7 @@ class Evaluation():
         while not self.__expr.is_empty():
             value = self.__expr.dequeue()
             
-            if isinstance(value, float):    # is a number
+            if isinstance(value, Decimal):    # is a number
                 output_stack.push(value)
             else:                           # is a func. or op.
                 # find num. of required parameters

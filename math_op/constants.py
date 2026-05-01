@@ -1,9 +1,13 @@
+from decimal import Decimal
+
 class __ReadOnlyMeta(type):
     def __setattr__(cls, name, value):
         raise AttributeError(f"Cannot modify read-only attribute '{name}'")
         
     def __getattribute__(self, name):
-        return super().__getattribute__(name)
+        value = super().__getattribute__(name)
+        if isinstance(value, (float,int)): return Decimal(value)
+        else: return value            
     
 class Constant(metaclass=__ReadOnlyMeta):
     # define a List class with set access block 
@@ -15,7 +19,7 @@ class Constant(metaclass=__ReadOnlyMeta):
             raise AttributeError(f"Cannot modify look-up table")
         
         def __getitem__(self, index):
-            return self.__array[index]
+            return Decimal(self.__array[index])
 
     e =         2.718281828459045
     e10 =       22026.465794806716516957900645284

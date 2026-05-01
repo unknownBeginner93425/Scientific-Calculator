@@ -1,6 +1,8 @@
 from gui.gui import CalculatorApp
 from core.core_logic import CoreLogics
 
+import os, sys
+
 class Main():
     def __init__(self):
         self.__app = CalculatorApp(main_ref = self)
@@ -49,4 +51,6 @@ class Main():
 
         
 if __name__ == '__main__':
+    print(os.path.dirname(os.path.abspath(__file__)))
+    print(sys.executable)
     Main()

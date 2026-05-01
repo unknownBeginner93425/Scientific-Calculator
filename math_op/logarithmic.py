@@ -69,7 +69,10 @@ class CustomPower():
 class TenToPow():
     def __call__(self, power: float):
         return round( CustomPower()(10, power))
-    
+
+class TenToIntPow():
+    def __call__(self, base: float, power: int):
+        return round( base * int_pow(10, power))
 class CustomRoot():
     def __call__(self, order, radicand):
         return round( CustomPower()(radicand, 1/order))

@@ -3,17 +3,20 @@ from math_op.utilities import sf_round as round
 from math_op.arithmetic_and_numerical import Factorial
 from math_op.constants import Constant
 
+from decimal import Decimal
+
 class Sin(RecursionTermCal):
     expression = staticmethod(lambda arg, nth:
         int_pow(-1, nth) / Factorial()(2 * nth + 1) 
         * int_pow(arg, 2 * nth + 1)
         )
     
-    def __call__(self, value) -> float:
-        return round(self.__reduce_arg(value))
+    def _arg_validation(self, arg):
+        if abs(arg) % Constant.pi < Decimal("1e-7") or abs(arg) % Constant.pi + Decimal("1e-7") > Constant.pi: return Decimal("0")
+        return self._reduce_arg(arg)
     
-    def __reduce_arg(self, value):
-        return self.term_cal(value % (2 * Constant.pi))
+    def _reduce_arg(self, arg):
+        return self.term_cal(arg % (2 * Constant.pi))
 
 class Cos(RecursionTermCal):
     expression = staticmethod(lambda arg, nth:
@@ -21,10 +24,12 @@ class Cos(RecursionTermCal):
         * int_pow(arg, 2 * nth)
         )
     
-    def __call__(self, value) -> float:
-        return round(self.__reduce_arg(value))
+    def _arg_validation(self, arg):
+        shifted_arg = abs(arg + Constant.pi / 2)
+        if shifted_arg % Constant.pi < Decimal("1e-7") or shifted_arg % Constant.pi + Decimal("1e-7") > Constant.pi: return Decimal("0")
+        return self._reduce_arg(arg)
     
-    def __reduce_arg(self, value):
+    def _reduce_arg(self, value):
         return self.term_cal(value % (2 * Constant.pi))
 
 class Tan(RecursionTermCal):
@@ -33,9 +38,6 @@ class Tan(RecursionTermCal):
         * (1 - int_pow(4, nth)) / Factorial()(2 * nth) 
         * int_pow(arg, 2 * nth - 1)
         )
-    
-    def __call__(self, value) -> float:
-        return round(self.__reduce_arg(value))
     
     def __reduce_arg(self, value):
         from math_op.arithmetic_and_numerical import AbsoluteValue
@@ -51,7 +53,7 @@ class Tan(RecursionTermCal):
 class Arcsin(RecursionTermCal):
     # expression can't be made as lambda func -> as subroutine
     
-    def __call__(self, value) -> float:
+    def __call__(self, value) -> Decimal:
         return round(self.__reduce_arg(value))
     
     def __reduce_arg(self, value):
@@ -86,9 +88,6 @@ class Arccos():
 class Arctan(RecursionTermCal):
     expression = staticmethod(lambda arg, nth: 
         int_pow(-1, nth) * int_pow(arg, 2*nth + 1) / (2*nth + 1))
-    
-    def __call__(self, value) -> float:
-        return round(self.__reduce_arg(value))
     
     def __reduce_arg(self, value):
         from math_op.arithmetic_and_numerical import AbsoluteValue

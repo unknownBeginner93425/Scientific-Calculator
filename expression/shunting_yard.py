@@ -1,6 +1,6 @@
 from utilities.stack_and_queue import CircularQueue, Stack
 from utilities.sql_handler import SQL
-
+from decimal import Decimal
 
 class ShuntingYard():
 
@@ -31,7 +31,7 @@ class ShuntingYard():
     def run(self):
         while not self.__INFIX_expr.is_empty():
             value = self.__INFIX_expr.dequeue()
-            if isinstance(value, float):                                # is a number
+            if isinstance(value, Decimal):                                # is a number
                 self.__RPN_queue.enqueue(value)
             elif value in self.__func_token:                              # is a function
                 self.__operator_stack.push(value)

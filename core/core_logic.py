@@ -89,10 +89,10 @@ class CoreLogics():
                 
     def on_button_press(self, token: int) -> None:
         processed_token_or_action = self.__preprocess_token(token)
-        try:
-            self.__process_router(processed_token_or_action)
-        except Exception as e:
-            self.__handle_error(e)
+        #try:
+        self.__process_router(processed_token_or_action)
+        #except Exception as e:
+        #    self.__handle_error(e)
                   
     def __preprocess_token(self, token: int) -> int | InputAction:
         preprocessor = LogicPreprocessor(main_ref=self.__main, logic=self)
@@ -277,7 +277,7 @@ class CoreLogics():
         # testing code
         end_time = perf_counter()
         print(f'Evaluation: {1000*(end_time-start_time1)}ms')
-        print(f'Calculation: {1000*1000*(end_time-start_time2)}us')
+        print(f'Calculation: {1000*(end_time-start_time2)}ms')
         # end testing code
         
         return evaluator.evaluate()

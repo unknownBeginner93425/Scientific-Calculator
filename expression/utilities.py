@@ -21,7 +21,7 @@ class NumberTokenQueue(CircularQueue):
                         106: '5', 107: '6', 108: '7', 109: '8', 110: '9',
                         111: '.'}
         
-        return float(''.join([token_to_num[self.dequeue()] for _ in range(self.size())]))
+        return Decimal(''.join([token_to_num[self.dequeue()] for _ in range(self.size())]))
     
 
 
