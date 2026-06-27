@@ -65,11 +65,6 @@ class CoreLogics():
     def set_display_state(self, state: DisplayState) -> None:
         '''router procedure; update display state & perform state-entry actions'''
         
-        # testing code
-        print(f'Ori display state: {self.__display_state}')
-        print(f'New display state: {state}')
-        # end testing code
-        
         if self.__display_state != state:
             self.__display_state = state
         

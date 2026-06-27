@@ -50,6 +50,7 @@ class StructuralNormalisation():
         self.__finalize_num_if_needed(new_expr)
         self.__balance_parenthesis(new_expr)
         self.__validate_comma_usage(new_expr, multi_arg_func)
+        self.__unary_plus_minus(new_expr)
         return new_expr
         
     def __insertion_logic(self, ori_expr: List[int], expr: Stack, parenthesis_func: Set[int]) -> None:
@@ -126,16 +127,25 @@ class StructuralNormalisation():
             if not valid: raise CommaError
 
     def __unary_plus_minus(self, expr: Stack):
-        output_stack = Stack()
+        ori_expr = stack_to_queue(expr)
+        temp_queue = CircularQueue()
         
-        for token in expr:
-            if token not in {301, 302, 320}: # is not plus/minus sign
-                output_stack.push(token)
-                continue
-            if output_stack.is_empty():
-                if token == 301: continue
-                else: output_stack.push(320); continue
-            if expr.pop() in {301, 302, 320}: pass
+        unary_op = {Token.ADD, Token.SUB}
+        
+        while not ori_expr.is_empty():
+            token = ori_expr.dequeue()
+            
+            if token not in unary_op:
+                expr.push(token)
+            else:       # known current token is unary_op
+                last_token = expr.peek() if not expr.is_empty() else None
+                if last_token in unary_op:
+                    expr.pop() ; expr.push(Token.ADD if token == last_token else Token.SUB)
+                else:
+                    if isinstance(last_token, Decimal) or last_token in {Token.CL_BRACKET}:
+                        expr.push(token)
+                    else:
+                        if token == Token.SUB: expr.push(Token.NEGATIVE)                
         
 class SemanticNormalisation():
     def __call__(self, expr: Stack, func_token: Set[int]) -> Stack:

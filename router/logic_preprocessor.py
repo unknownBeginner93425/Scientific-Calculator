@@ -75,11 +75,6 @@ class LogicPreprocessor():
         
         ori_mode = self.__cal_state.keymod
         
-        # testing code
-        print(f'Ori keymod: {ori_mode}')
-        print(f'New keymod: {new_mode}')
-        # end testing code
-        
         # shifted mode + press shift button = cancel shift mode
         if ori_mode == new_mode:        self.__main.indicator_on_off(mode_indi[ori_mode]); new_mode = Keymod.KEYCAP
         elif ori_mode == Keymod.KEYCAP:      self.__main.indicator_on_off(mode_indi[new_mode])

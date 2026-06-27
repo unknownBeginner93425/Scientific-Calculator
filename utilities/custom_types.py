@@ -59,6 +59,9 @@ class Keymod(StrEnum):
 
 class Token(IntEnum):
     ANS = 209
+    ADD = 301
+    SUB = 302
+    NEGATIVE = 320
     OP_BRACKET = 330
     CL_BRACKET = 331
     COMMA = 332

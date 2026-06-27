@@ -17,7 +17,7 @@ class TaylorSeriesFunction(ABC):
     def _arg_validation(self, arg):
         pass
 
-class RecursionTermCal():#TaylorSeriesFunction):
+class RecursionTermCal():
     expression = lambda: None
 
     def __call__(self, arg) -> Decimal:
@@ -68,7 +68,7 @@ def sf_round(value: Decimal, MAX_LENGTH: int = 15) -> Decimal:
             case 0:
                 return Decimal('0')
             case 1:
-                rounded_num = Decimal(int(float(f'{number}e{OoM}')))
+                rounded_num = Decimal(f'{number}e{OoM}')
             case _:
                 rounded_num = Decimal(f'{number[0]}.{number[1:]}e{OoM}')    
         
