@@ -1,5 +1,5 @@
 from utilities.sql_handler import SQL
-from utilities.custom_types import Cursor, DisplayState, Token
+from utilities.custom_types import Cursor, DisplayState, Token, FrameBuffer
 
 from core.settings_and_variables import SettingsManager, VariableMemory
 
@@ -16,11 +16,14 @@ from router.off_logic import OffLogic
 from router.result_logic import ResultLogic
 from router.error_logic import ErrorLogic
 
+from bitmap.expr_rendering import RenderEngine
+
 from typing import TYPE_CHECKING, Literal
 from copy import deepcopy
 
 if TYPE_CHECKING:
     from main import Main
+    from core.ui_io_interface import BitmapScreenInterface, TextboxScreenInterface
 
 class CoreLogics():
     def __init__(self, main: 'Main'):      
@@ -35,6 +38,11 @@ class CoreLogics():
         self.__current_expression = ExpressionArray(self.__cursor)
         self.__expression_hist = []
         
+        self.__ui_framebuffer = FrameBuffer()
+        self.__expr_render_engine = RenderEngine(self.__ui_framebuffer)
+        
+        self.__current_ui_IO_interface = None
+        
     def get_setting_manager(self) -> SettingsManager:
         return self.__settings_manager
     
@@ -43,6 +51,9 @@ class CoreLogics():
     
     def get_cursor(self) -> Cursor:
         return self.__cursor
+    
+    def get_framebuffer(self) -> FrameBuffer:
+        return self.__ui_framebuffer
     
     def move_cursor(self, step: Literal[1, -1, 999, -999]) -> None:
         '''step = +999 -> move cursor to end of expr
@@ -61,7 +72,25 @@ class CoreLogics():
         elif step == -999:
             self.__cursor.reset()
         else: raise AttributeError(f'Invalid attribute value: step = {step}')
+        
+    def set_io_interface_ref(self, bitmap: "BitmapScreenInterface", txtbox: "TextboxScreenInterface"):
+        self.__bitmap_screen_interface = bitmap
+        self.__txtbox_screen_interface = txtbox
+        
+    def update_io_interface(self) -> None:
+        if self.__settings_manager.get("screen_type") == 0:
+            self.__current_ui_IO_interface = self.__txtbox_screen_interface
+        else:
+            self.__current_ui_IO_interface = self.__bitmap_screen_interface
        
+    def expression_add_token(self, token: int):
+        '''called by input logic -> add token to expr, then update gui output'''
+        self.get_current_expression().update(token)
+        self.input_screen_refresh()
+    
+    def input_screen_refresh(self):
+        self.__current_ui_IO_interface.input_screen_refresh()
+    
     def set_display_state(self, state: DisplayState) -> None:
         '''router procedure; update display state & perform state-entry actions'''
         
@@ -72,15 +101,22 @@ class CoreLogics():
             case DisplayState.RESULT:
                 self.__main.gui_input_screen_cursor_off()
             case DisplayState.INPUT:
-                self.__main.gui_input_screen_cursor_on()
-                self.__main.input_screen_refresh()
-                self.__main.gui_output_screen_off()
+                self.__current_ui_IO_interface.gui_input_screen_cursor_on()
+                self.__current_ui_IO_interface.input_screen_refresh()
+                self.__current_ui_IO_interface.gui_output_screen_off()
+                
+                #self.__main.gui_input_screen_cursor_on()
+                #self.__main.input_screen_refresh()
+                #self.__main.gui_output_screen_off()
             case DisplayState.OFF:
-                self.__main.gui_input_screen_cursor_off()
-                self.__main.gui_output_screen_off()
+                self.__current_ui_IO_interface.gui_input_screen_cursor_off()
+                self.__current_ui_IO_interface.gui_output_screen_off()
+                #self.__main.gui_input_screen_cursor_off()
+                #self.__main.gui_output_screen_off()
                 self.reset_expression()
             case DisplayState.ERROR:
-                self.__main.gui_input_screen_cursor_off()
+                self.__current_ui_IO_interface.gui_input_screen_cursor_off()
+                #self.__main.gui_input_screen_cursor_off()
                 
     def on_button_press(self, token: int) -> None:
         processed_token_or_action = self.__preprocess_token(token)
@@ -109,15 +145,16 @@ class CoreLogics():
  
     def __handle_error(self, error: Exception) -> None:
         self.set_display_state(DisplayState.ERROR)
-        self.__main.display_error_message(f'{error}')
+        self.__current_ui_IO_interface.display_error_message(f'{error}')
+        #self.__main.display_error_message(f'{error}')
     
     def __get_button_press_handler(self) \
     -> type[InputLogic] | type[OffLogic] | type[ResultLogic] | type[ErrorLogic] | None:
-        handler = {DisplayState.INPUT: InputLogic,
+        handler = { DisplayState.INPUT:  InputLogic,
                     DisplayState.RESULT: ResultLogic,
-                    DisplayState.ERROR: ErrorLogic,
-                    DisplayState.MENU: None,
-                    DisplayState.OFF: OffLogic}
+                    DisplayState.ERROR:  ErrorLogic,
+                    DisplayState.MENU:   None,
+                    DisplayState.OFF:    OffLogic}
         
         return handler[self.__display_state]
             
@@ -144,6 +181,9 @@ class CoreLogics():
         # expression initialisation
         self.__current_expression = ExpressionArray(self.__cursor)
         self.__expression_hist = []
+        
+        # render engine preparation
+        self.__expr_render_engine.set_cursor_ref(self.__cursor)
     
     def cal_turn_off(self) -> None:
         # internal states update
@@ -194,7 +234,8 @@ class CoreLogics():
         '''reset current expr var. into new instance; reset cursor; update gui'''
         self.__current_expression = ExpressionArray(self.__cursor)
         self.__cursor.reset()
-        self.__main.input_screen_refresh()
+        self.__current_ui_IO_interface.input_screen_refresh()
+        #self.__main.input_screen_refresh()
     
     def expr_evaluate_and_result_output(self) -> None:
         self.set_display_state(DisplayState.RESULT)
@@ -233,7 +274,8 @@ class CoreLogics():
     def __handle_evaluation(self, expr: list[int]) -> None:
         '''evaluate expr; display output on screen; store result to Ans'''
         result = self.__expr_evaluate(expr)
-        self.__main.display_output(str(result))
+        self.__current_ui_IO_interface.display_output(str(result))
+        #self.__main.display_output(str(result))
         self.__store_result(result)
     
     def __update_history(self) -> None:
@@ -276,3 +318,9 @@ class CoreLogics():
         # end testing code
         
         return evaluator.evaluate()
+    
+    def bitmap_screen_refresh(self):
+        self.__expr_render_engine.update_screen(self.__current_expression.repr())
+        
+    def bitmap_process_cal_result(self, result: str):
+        self.__expr_render_engine.display_result(result)

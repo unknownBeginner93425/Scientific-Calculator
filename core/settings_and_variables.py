@@ -31,14 +31,15 @@ class SettingsManager():
                   'recurring_dec': False,       # nevermind
                   'decimal_mark': 0,            # nevermind
                   'digit_separator': False,     # nevermind
-                  'multiLine_font': 0           # nevermind
+                  'multiLine_font': 0,          # nevermind
+                  'screen_type': 1              # 0 for txtbox; 1 for bitmap
                   }
     
     __settings_name = Literal['I_method', 'O_method', 'angle_unit', 
                                 'number_format', 'fraction_result',
                                 'statistics', 'table','recurring_dec', 
                                 'decimal_mark', 'digit_separator', 
-                                'multiLine_font']
+                                'multiLine_font', 'screen_type']
     
     def set(self, name: __settings_name, value: int|bool|str) -> None:
         '''set single setting'''

@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from utilities.custom_types import Cursor
-
+    
 class InputTextbox(Label):
     '''text should always be consistent to Expression'''
     text_content = []

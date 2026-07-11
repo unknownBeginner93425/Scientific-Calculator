@@ -3,6 +3,8 @@ from math_op.utilities import sf_round as round
 from math_op.arithmetic_and_numerical import Factorial
 from math_op.constants import Constant
 
+from decimal import Decimal
+
 class NaturalExponentialFunction(RecursionTermCal):
     expression = staticmethod(lambda arg, nth: 
         int_pow(base = arg, power = nth) / Factorial()(nth)
@@ -41,46 +43,47 @@ class NaturalLogarithm(RecursionTermCal):
         else: return self.term_cal(argument - 1, 1)
 
 class LogarithmCustomBase():
-    def __call__(self, base: float, argument: float):
+    def __call__(self, base: Decimal, argument: Decimal):
         return round( NaturalLogarithm()(argument) / NaturalLogarithm()(base)) 
     
 class LogarithmBase10():
-    def __call__(self, argument: float):
+    def __call__(self, argument: Decimal):
         return round( LogarithmCustomBase()(10, argument))
     
 class Cube():
-    def __call__(self, base: float):
+    def __call__(self, base: Decimal):
         return round( int_pow(base, 3))
     
 class Square():
-    def __call__(self, base: float):
+    def __call__(self, base: Decimal):
         return round( int_pow(base, 2))
     
 class Reciprocal():
-    def __call__(self, base: float):
+    def __call__(self, base: Decimal):
         return round( 1 / base)
     
 class CustomPower():
-    def __call__(self, base: float, power: float) -> float:
+    def __call__(self, base: Decimal, power: Decimal):
         if power == 0: return 1
         elif base == 0: return 0
         return round( NaturalExponentialFunction()(power * NaturalLogarithm()(base)))
     
 class TenToPow():
-    def __call__(self, power: float):
+    def __call__(self, power: Decimal):
         return round( CustomPower()(10, power))
 
 class TenToIntPow():
-    def __call__(self, base: float, power: int):
+    def __call__(self, base: Decimal, power: Decimal):
         return round( base * int_pow(10, power))
+    
 class CustomRoot():
-    def __call__(self, order, radicand):
+    def __call__(self, order: Decimal, radicand: Decimal):
         return round( CustomPower()(radicand, 1/order))
     
 class CubeRoot():
-    def __call__(self, radicand: float):
-        return round( CustomRoot()(3, radicand))
+    def __call__(self, radicand: Decimal):
+        return round( CustomRoot()(Decimal("3"), radicand))
     
 class SquareRoot():
-    def __call__(self, radicand: float):
-        return round( CustomRoot()(2, radicand))
+    def __call__(self, radicand: Decimal):
+        return round( CustomRoot()(Decimal("2"), radicand))

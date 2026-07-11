@@ -1,3 +1,4 @@
+from core.ui_io_interface import BitmapScreenInterface, TextboxScreenInterface
 from gui.gui import CalculatorApp
 from core.core_logic import CoreLogics
 
@@ -7,6 +8,12 @@ class Main():
     def __init__(self):
         self.__app = CalculatorApp(main_ref = self)
         self.__logic = CoreLogics(main = self)
+        
+        self.__bitmap_io = BitmapScreenInterface(self.__app, self.__logic)
+        self.__txtbox_io = TextboxScreenInterface(self.__app, self.__logic)
+        
+        self.__logic.set_io_interface_ref(self.__bitmap_io, self.__txtbox_io)
+        self.__logic.update_io_interface()
 
         self.__app.run()
         
@@ -32,24 +39,9 @@ class Main():
     def get_cursor(self):
         return self.__logic.get_cursor()
     
-    def expression_add_token(self, token: int):
-        '''called by input logic -> add token to expr, then update gui output'''
-        self.__logic.get_current_expression().update(token)
-        self.input_screen_refresh()
-        
-    def input_screen_refresh(self):
-         '''no specific caller; to keep gui output consistent with expr'''
-         self.__app.window.ids['txt_box_screen_I'].update_text(self.__logic.expression_to_str())
-        
-    def display_output(self, cal_result: str):
-        '''display calculation output only; not error message'''
-        self.__app.window.ids['txt_box_screen_O'].update_text(cal_result)
-        
-    def display_error_message(self, error_type: str):
-        self.__app.window.ids['txt_box_screen_I'].update_text([error_type])
-        self.__app.window.ids['txt_box_screen_O'].update_text('[AC]  :Cancel\n[←][→]:Goto')
-
-        
+    def get_framebuffer(self):
+        return self.__logic.get_framebuffer()
+      
 if __name__ == '__main__':
     print(os.path.dirname(os.path.abspath(__file__)))
     print(sys.executable)

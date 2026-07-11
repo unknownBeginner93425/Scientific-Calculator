@@ -86,8 +86,8 @@ class StructuralNormalisation():
             
     def __handle_func_token(self, token: int, expr: Stack, parenthesis_func: Set[int]) -> None:
         expr.push(token)
-        if token in parenthesis_func:
-            expr.push(Token.OP_BRACKET)  # opening bracket
+        #if token in parenthesis_func:
+        #    expr.push(Token.OP_BRACKET)  # opening bracket
             
     def __balance_parenthesis(self, expr: Stack) -> None:
         '''if more open bracket than close bracket -> add close brack in the end of expr'''
@@ -142,7 +142,7 @@ class StructuralNormalisation():
                 if last_token in unary_op:
                     expr.pop() ; expr.push(Token.ADD if token == last_token else Token.SUB)
                 else:
-                    if isinstance(last_token, Decimal) or last_token in {Token.CL_BRACKET}:
+                    if isinstance(last_token, Decimal) or last_token // 100 == 2 or last_token in {Token.CL_BRACKET}:
                         expr.push(token)
                     else:
                         if token == Token.SUB: expr.push(Token.NEGATIVE)                

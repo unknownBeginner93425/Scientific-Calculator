@@ -1,4 +1,5 @@
 from router.input_action import ActionKind
+from utilities.custom_types import Token
 
 from typing import TYPE_CHECKING
 
@@ -32,15 +33,19 @@ class InputController():
             case ActionKind.EXPR_REMOVE_ONE_TOKEN:
                 self.__main_logic.get_current_expression().remove()
             case ActionKind.I_SCREEN_REFRESH:
-                self.__main.input_screen_refresh()
+                self.__main_logic.input_screen_refresh()
             case ActionKind.IGNORE:
                 pass
                 
     def __token_insertion_logic(self, token: int) -> None:
         math_input_exclus_func = {309, 313}
         currently_out_of_scope = {321, 333, 334, 343}
+        require_op_bracket = {306, 307, 310, 311, 314, 315, 316, 317, 318, 319,
+                              324, 325, 326, 327, 328, 329, 337, 338, 339, 341}
         
         if self.__cal_states.get('I_method') == 1 and \
             token not in math_input_exclus_func \
                 and token not in currently_out_of_scope:
-                    self.__main.expression_add_token(token)
+                    self.__main_logic.expression_add_token(token)
+                    if token in require_op_bracket:
+                        self.__main_logic.expression_add_token(Token.OP_BRACKET)

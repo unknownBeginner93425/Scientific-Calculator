@@ -5,7 +5,7 @@
     pos_hint: {'center_x': 0.5,'center_y': 0.5}
     
     Image:
-        source: "gui/img/calculator_image.jpg"
+        source: "gui/img/calculator_image.png"
         size_hint: 1, 1
         pos_hint: {'center_x': 0.5,'center_y': 0.5}
         allow_stretch: True
@@ -31,6 +31,11 @@
 
         size_hint: 0.76, 0.06
         pos_hint: {'x': 0.12, 'y': 0.702}
+
+    BitmapScreen:
+        id: screen
+        size_hint: 0.74, 0.115
+        pos_hint: {'x': 0.128, 'y': 0.707}
 
     RelativeLayout:
         id: indicators

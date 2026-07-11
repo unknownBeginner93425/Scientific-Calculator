@@ -52,6 +52,7 @@ class Evaluation():
         
     def evaluate(self) -> float:
         output_stack = Stack()
+        print(self.__expr)
         
         while not self.__expr.is_empty():
             value = self.__expr.dequeue()

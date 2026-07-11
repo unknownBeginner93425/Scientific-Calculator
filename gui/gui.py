@@ -6,6 +6,7 @@ from kivy.clock import Clock
 from kivy.utils import platform
 
 from gui.textbox_screen import InputTextbox, OutputTextbox
+from gui.bitmap_screen import BitmapScreen
 from gui.widgets import Indicator
 
 from typing import TYPE_CHECKING
@@ -95,6 +96,7 @@ class Calculator(RelativeLayout):
         self.__widget_to_token = {ref: id for id, ref in self.ids.items()}
         
         self.set_cursor()
+        self.set_framebuffer()
 
     def on_button_press(self, button_ref):
         # testing code
@@ -108,6 +110,13 @@ class Calculator(RelativeLayout):
         # testing code
         Clock.schedule_once(self.after_frame, 0)
         # end testing code
+        
+    def screen_test_func(self, button_ref):
+        pressed = int(self.__widget_to_token[button_ref])
+        #from bitmap.token_rendering import draw_glyph
+        #draw_glyph(self.ids["screen"], 0, 0, 324)
+        self.ids["screen"].update_texture()
+        #self.ids["screen"].random_test_pattern()
         
     # testing function
     def after_frame(self, dt):
@@ -128,6 +137,10 @@ class Calculator(RelativeLayout):
     def set_cursor(self):
         '''link cursor obj in CoreLogic to textbox screen'''
         self.ids['txt_box_screen_I'].set_cursor_ref(self.__main_ref.get_cursor())
+        
+    def set_framebuffer(self):
+        '''link FrameBuffer obj in CoreLogic to bitmap mono screen'''
+        self.ids['screen'].set_framebuffer_ref(self.__main_ref.get_framebuffer())
            
 if __name__ == '__main__':
     app = CalculatorApp()
