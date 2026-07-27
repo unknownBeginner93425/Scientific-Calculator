@@ -1,6 +1,6 @@
-# AQA CS NEA Scientific Calculator
+# Scientific Calculator
 
-A Python-based scientific calculator project built with Kivy for the AQA Computer Science NEA. The application provides a graphical calculator interface with a custom expression engine, scientific functions, and a bitmap-style display.
+A Python-based scientific calculator project built with Kivy for the AQA Computer Science NEA and extended further for personal interest. The application provides a graphical calculator interface with a custom expression engine, scientific functions, and a bitmap-style display.
 
 ## Overview
 
