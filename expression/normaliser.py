@@ -141,11 +141,11 @@ class StructuralNormalisation():
                 last_token = expr.peek() if not expr.is_empty() else None
                 if last_token in unary_op:
                     expr.pop() ; expr.push(Token.ADD if token == last_token else Token.SUB)
-                else:
+                elif last_token is not None:
                     if isinstance(last_token, Decimal) or last_token // 100 == 2 or last_token in {Token.CL_BRACKET}:
                         expr.push(token)
-                    else:
-                        if token == Token.SUB: expr.push(Token.NEGATIVE)                
+                        continue
+                    if token == Token.SUB: expr.push(Token.NEGATIVE)                
         
 class SemanticNormalisation():
     def __call__(self, expr: Stack, func_token: Set[int]) -> Stack:

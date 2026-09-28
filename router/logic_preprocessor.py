@@ -6,13 +6,14 @@ from utilities.custom_types import Keymod, Token
 from utilities.sql_handler import SQL
 
 if TYPE_CHECKING:
-    from main import Main, CoreLogics    
+    from main import Main
+    from core.settings_and_variables import SettingsManager    
     
 class LogicPreprocessor():
-    def __init__(self, main_ref: 'Main', logic: 'CoreLogics'):
+    def __init__(self, main_ref: 'Main', settings_manager: 'SettingsManager'):
         self.__main = main_ref
-        self.__main_logic = logic
-        self.__cal_state = self.__main_logic.get_setting_manager()
+        #self.__main_logic = logic
+        self.__cal_state = settings_manager
 
         # defined as those taking same effect in all non-off display mode
         # i.e. shift, alpha, on and off

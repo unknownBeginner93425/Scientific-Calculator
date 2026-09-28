@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from gui.gui import CalculatorApp
-    from core.core_logic import CoreLogics 
+    from core.core_logics import CoreLogics 
+    
 class UI_IO_Interface(ABC):
     @abstractmethod
     def gui_input_screen_cursor_on(self):
@@ -49,7 +50,7 @@ class TextboxScreenInterface(UI_IO_Interface):
         
     def input_screen_refresh(self):
          '''no specific caller; to keep gui output consistent with expr'''
-         self.__gui.window.ids['txt_box_screen_I'].update_text(self.__logic.expression_to_str())
+         self.__gui.window.ids['txt_box_screen_I'].update_text(self.__logic.state_manager.expression_to_str())
         
     def display_output(self, cal_result: str):
         '''display calculation output only; not error message'''
@@ -75,12 +76,12 @@ class BitmapScreenInterface(UI_IO_Interface):
             
     def input_screen_refresh(self):
         '''no specific caller; to keep gui output consistent with expr'''
-        self.__logic.bitmap_screen_refresh()
+        self.__logic.display_manager.bitmap_screen_refresh()
         self.__gui.window.ids['screen'].update_texture()
         
     def display_output(self, cal_result: str):
         '''display calculation output only; not error message'''
-        self.__logic.bitmap_process_cal_result(cal_result)
+        self.__logic.display_manager.bitmap_process_cal_result(cal_result)
         self.__gui.window.ids['screen'].update_texture()
         
     def display_error_message(self, error_type: str):

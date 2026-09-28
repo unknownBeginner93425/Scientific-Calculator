@@ -1,24 +1,26 @@
 from core.ui_io_interface import BitmapScreenInterface, TextboxScreenInterface
 from gui.gui import CalculatorApp
-from core.core_logic import CoreLogics
+from core.core_logics import CoreLogics
 
 import os, sys
 
 class Main():
     def __init__(self):
         self.__app = CalculatorApp(main_ref = self)
-        self.__logic = CoreLogics(main = self)
+        self.__logic = CoreLogics(main_ref = self)
         
         self.__bitmap_io = BitmapScreenInterface(self.__app, self.__logic)
         self.__txtbox_io = TextboxScreenInterface(self.__app, self.__logic)
+        print('Main: GUI and logic initialized')
         
-        self.__logic.set_io_interface_ref(self.__bitmap_io, self.__txtbox_io)
-        self.__logic.update_io_interface()
+        self.__logic.display_manager.set_io_interface_ref(self.__bitmap_io, self.__txtbox_io)
+        self.__logic.state_manager.update_io_interface()
+        print('Main: IO interface references set')
 
         self.__app.run()
         
     def button_pressed(self, token: int) -> None:
-        self.__logic.on_button_press(token)
+        self.__logic.button_press_handler.on_button_press(token)
     
     def indicator_on_off(self, token: int| None) -> None:
         if token == None: return
@@ -37,11 +39,11 @@ class Main():
         self.__app.window.ids['txt_box_screen_O'].reset()
         
     def get_cursor(self):
-        return self.__logic.get_cursor()
+        return self.__logic.state_manager.get_cursor()
     
     def get_framebuffer(self):
-        return self.__logic.get_framebuffer()
-      
+        return self.__logic.display_manager.get_framebuffer()
+
 if __name__ == '__main__':
     print(os.path.dirname(os.path.abspath(__file__)))
     print(sys.executable)
